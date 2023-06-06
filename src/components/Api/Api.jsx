@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Audio } from "react-loader-spinner";
 import Button from 'components/Button/Button';
+import Loader from "components/Loader/Loader";
 
 export class Api extends Component {
   state = {
@@ -52,7 +53,7 @@ export class Api extends Component {
     if (status === "pending") {
       return (
         <div>
-          <Audio height={80} width={80} radius={9} color="green" ariaLabel="loading" wrapperStyle={{}} wrapperClass={""} />
+            <Loader/>
         </div>
       );
     }
@@ -78,21 +79,4 @@ export class Api extends Component {
   }
 }
 
-
-// <p>За результатом {this.props.galleryName} нічого не знайдено</p>
-// {gallery && gallery.total > 0 && (
-//     <div>
-//       <img
-//         src={gallery.hits[0].largeImageURL}
-//         alt={gallery.alt}
-//         width="250"
-//       />
-//       {gallery.total}
-//     </div>
-//   )}
-
-
-//idle
-//pending
-//resolved
-//rejeckted
+// 
