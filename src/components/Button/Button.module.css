@@ -1,0 +1,13 @@
+.buttonLoadMore{
+    height: 30px;
+    border-radius: 10px;
+    background-color: darkseagreen;
+    padding: 0 5px;
+    margin: 10px 0;
+}
+.buttonLoadMore:hover{
+    scale: 1.1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

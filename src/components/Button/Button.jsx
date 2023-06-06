@@ -1,7 +1,17 @@
-import React from "react";
+import React, { Component } from 'react';
+import css from './Button.module.css';
 
-const Button = ({ onClick }) => {
-    return <button onClick={onClick}>Завантажити ще</button>;
-};
 
-export default Button;
+export class Button extends Component {
+  render() {
+    return (
+      <button
+      className={css.buttonLoadMore}
+        onClick={this.props.onFindMore}
+        type="button"
+      >
+        Load more
+      </button>
+    );
+  }
+}

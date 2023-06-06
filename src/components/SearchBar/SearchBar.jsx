@@ -1,43 +1,44 @@
 import React, { Component } from "react";
+import { toast } from 'react-toastify';
+import css from './Searchbar.module.css';
 
 export class Searchbar extends Component {
-
-    state={
-        galleryName: '',
-    }
-
-    handleNameChange = e => {
-        this.setState({ galleryName: e.currentTarget.value.toLowerCase() });
-    }
-
-    handleFormSubmit = e => {
-        e.preventDefault();
-
-
-
-        this.props.onSubmit(this.state.galleryName);
-        this.setState({galleryName: ''});
-    }
-
+    state = {
+      searchQuery: '',
+    };
+  
+    handleQueryChange = event => {
+      this.setState({ searchQuery: event.currentTarget.value.toLowerCase() });
+    };
+  
+    handleSubmit = event => {
+      event.preventDefault();
+      if (this.state.searchQuery.trim() === '') {
+        toast.error('Enter a keyword');
+        return;
+      }
+      this.props.onSubmit(this.state.searchQuery);
+      this.setState({ searchQuery: '' });
+    };
+  
     render() {
-        return(
-            <>
-            <header>
-                <form onSubmit={this.handleFormSubmit}>
-                    <button type="submit" class="button">
-                        <span>Search</span>
-                    </button>
-                    <input
-                        type="text"
-                        onChange={this.handleNameChange}
-                        value={this.state.galleryName}
-                        autoComplete="off"
-                        autoFocus
-                        placeholder="Search images and photos"
-                    />
-                </form>
-            </header>
-            </>
-        );
+      return (
+        <div onSubmit={this.handleSubmit} className="searchbar">
+          <form className={css.form}>
+            <input
+              onChange={this.handleQueryChange}
+              value={this.state.searchQuery}
+              className={css.input}
+              type="text"
+              autoComplete="off"
+              autoFocus
+              placeholder="Search images and photos"
+            />
+            <button type="submit" className={css.button}>
+              <span className="button-label">Search</span>
+            </button>
+          </form>
+        </div>
+      );
     }
-}
+  }

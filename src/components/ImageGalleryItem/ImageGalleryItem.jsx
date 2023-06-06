@@ -1,15 +1,12 @@
-import React from "react";
+import React , { Component } from "react";
+import css from './ImageGalley.module.css'
 
-const ImageGalleryItem = ({ gallery }) => {
-  return (
-    <ul>
-      {gallery.map((photo) => (
-        <li key={photo.id}>
-          <img key={photo.id} src={photo.webformatURL} alt={photo.tags} width="250" />
-        </li>
-      ))}
-    </ul>
-  );
-};
-
-export default ImageGalleryItem;
+export class ImageGalleryItem extends Component {
+  render() {
+    return (
+      <li className={css.ImgGalleryli} onClick={this.props.showModal}>
+        <img src={this.props.smallImg} alt={this.props.alt} />
+      </li>
+    );
+  }
+}

@@ -1,37 +1,31 @@
 import React, { Component } from "react";
 
-class Modal extends Component {
+export class Modal extends Component {
   componentDidMount() {
-    document.addEventListener("keydown", this.handleKeyDown);
+    window.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.handleKeyDown);
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleKeyDown = (event) => {
-    if (event.key === "Escape") {
-      this.props.onClose();
+  handleKeyDown = event => {
+    if (event.code === 'Escape') {
+      this.props.closeModal();
     }
   };
 
-  handleOverlayClick = (event) => {
-    if (event.target === event.currentTarget) {
-      this.props.onClose();
+  handleBackdropClick = event => {
+    if (event.currentTarget === event.target) {
+      this.props.closeModal();
     }
   };
 
   render() {
-    const { imageUrl, alt } = this.props;
-
     return (
-      <div className="overlay" onClick={this.handleOverlayClick}>
-        <div className="modal">
-          <img src={imageUrl} alt={alt} />
-        </div>
+      <div onClick={this.handleBackdropClick}>
+          <img src={this.props.modalImage} alt="modalImage" />
       </div>
     );
   }
 }
-
-export default Modal;
