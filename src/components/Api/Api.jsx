@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Audio } from "react-loader-spinner";
 import Button from 'components/Button/Button';
 import Loader from "components/Loader/Loader";
+import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem'
 
 export class Api extends Component {
   state = {
@@ -61,9 +61,9 @@ export class Api extends Component {
     if (status === "resolved" && gallery && gallery.length > 0) {
       return (
         <div>
-          {gallery.map((photo) => (
-            <img key={photo.id} src={photo.largeImageURL} alt={photo.tags} width="250" />
-          ))}
+            <ImageGalleryItem
+            gallery={this.state.gallery}
+            />
           <Button onClick={this.loadMore} />
         </div>
       );
@@ -78,5 +78,3 @@ export class Api extends Component {
     }
   }
 }
-
-// 
