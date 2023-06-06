@@ -1,16 +1,27 @@
-export const App = () => {
-  return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
-  );
-};
+import React, { Component } from "react";
+import { ToastContainer } from "react-toastify";
+import {Searchbar} from 'components/SearchBar/SearchBar';
+import { Api } from "./Api/Api";
+
+export class App extends Component {
+
+  state = {
+    galleryName: '',
+  };
+
+  handleSubmitForm = galleryName => {
+    this.setState({galleryName});
+  }
+
+  render() {
+    return (
+      <>
+        <Searchbar 
+        onSubmit={this.handleSubmitForm}
+        />
+        <Api galleryName={this.state.galleryName}/>
+        <ToastContainer autoClose={3000}/>
+      </>
+    );
+  }
+}
