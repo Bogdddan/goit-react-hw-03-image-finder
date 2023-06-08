@@ -63,11 +63,13 @@ export class ImageGallery extends Component {
 
     render() {
         const { loading, images, hiddenBtn } = this.state;
-
+    
+        const isButtonDisabled = !images || hiddenBtn;
+    
         return (
             <>
                 {loading && <Loader />}
-
+    
                 {images && (
                     <ul className={css.imageGalleryUl}>
                         {images.map(image => (
@@ -80,9 +82,9 @@ export class ImageGallery extends Component {
                         ))}
                     </ul>
                 )}
-
+    
                 {images && !hiddenBtn && (
-                    <Button onFindMore={this.loadMoreImages} />
+                    <Button onFindMore={this.loadMoreImages} disabled={isButtonDisabled} />
                 )}
             </>
         );
