@@ -15,8 +15,25 @@ export class ImageGallery extends Component {
     };
 
     showErrorMsg = () => {
-    toast.error(`за вашим результатом нічого не знайдено`);
+        toast.error (`за вашим результатом нічого не знайдено`);
 };
+
+componentDidUpdate(prevProps, prevState) {
+    if (prevProps.searchQuery !== this.props.searchQuery) {
+    this.setState({ loading: true, images: null, page: 1, hiddenBnt: false });
+
+    
+        fetchGalleryImg(this.props.searchQuery, this.state.page)
+        .then(({ hits }) => {
+            if (hits.length === 0) {
+            this.showErrorMsg();
+            } else this.setState({ images: hits });
+        })
+        .catch(error => this.setState({ error }))
+        .finally(() => this.setState({ loading: false }));
+    
+}
+}
 
     onFindMore = () => {
     this.setState(prevState => ({
@@ -44,23 +61,6 @@ export class ImageGallery extends Component {
             .finally(() => this.setState({ loading: false }));
 
     };
-
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps.searchQuery !== this.props.searchQuery) {
-        this.setState({ loading: true, images: null, page: 1, hiddenBnt: false });
-
-        setTimeout(() => {
-            fetchGalleryImg(this.props.searchQuery, this.state.page)
-            .then(({ hits }) => {
-                if (hits.length === 0) {
-                this.showErrorMsg();
-                } else this.setState({ images: hits });
-            })
-            .catch(error => this.setState({ error }))
-            .finally(() => this.setState({ loading: false }));
-        });
-    }
-    }
 
     render() {
     return (

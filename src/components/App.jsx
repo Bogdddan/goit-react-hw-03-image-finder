@@ -3,6 +3,7 @@ import { ToastContainer } from "react-toastify";
 import {Searchbar} from './SearchBar/SearchBar';
 import { Modal } from "./Modal/Modal";
 import { ImageGallery } from './ImageGallery/ImageGallery';
+import css from './Button/Button.module.css'
 
 
 export class App extends Component {
@@ -39,8 +40,7 @@ export class App extends Component {
             modalImage={this.state.modalImage}
           />
         )}
-        <ToastContainer style={{width : 200,
-        margin : '0 auto'}} autoClose={1000} theme="colored" />
+        <ToastContainer className={css.toaster} autoClose={1000} theme="colored" />
         </div>
       </>
     );
