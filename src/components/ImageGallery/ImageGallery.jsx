@@ -8,83 +8,83 @@ import css from './imageGallery.module.css';
 
 export class ImageGallery extends Component {
     state = {
-    images: null,
-    loading: false,
-    page: 1,
-    hiddenBnt: false,
+        images: null,
+        loading: false,
+        page: 1,
+        hiddenBtn: false,
+        searchQuery: "",
     };
 
     showErrorMsg = () => {
-        toast.error (`за вашим результатом нічого не знайдено`);
-};
+        toast.error(`За вашим результатом нічого не знайдено`);
+    };
 
-componentDidUpdate(prevProps, prevState) {
-    if (prevProps.searchQuery !== this.props.searchQuery) {
-    this.setState({ loading: true, images: null, page: 1, hiddenBnt: false });
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.searchQuery !== this.props.searchQuery) {
+            this.setState({ loading: true, images: null, page: 1, hiddenBtn: false, searchQuery: this.props.searchQuery }, () => {
+                this.fetchImages();
+            });
+        }
+    }
 
-    
-        fetchGalleryImg(this.props.searchQuery, this.state.page)
-        .then(({ hits }) => {
-            if (hits.length === 0) {
-            this.showErrorMsg();
-            } else this.setState({ images: hits });
-        })
-        .catch(error => this.setState({ error }))
-        .finally(() => this.setState({ loading: false }));
-    
-}
-}
+    fetchImages = () => {
+        const { searchQuery, page } = this.state;
+        this.setState({ loading: true });
 
-    onFindMore = () => {
-    this.setState(prevState => ({
-        page: prevState.page + 1,
-        loading: true,
-        hiddenBnt: false,
-    }));
-
-        
-        fetchGalleryImg(this.props.searchQuery, this.state.page)
+        fetchGalleryImg(searchQuery, page)
             .then(({ hits, totalHits }) => {
-            if (hits.length === 0) {
-                this.showErrorMsg();
-                this.setState({ hiddenBnt: true });
-            } else
-                this.setState(prevState => ({
-                images: [...prevState.images, ...hits],
-                }));
-            if (12 * this.state.page > totalHits) {
-                this.setState({ hiddenBnt: true });
-                this.showErrorMsg();
-            }
+                if (hits.length === 0) {
+                    this.showErrorMsg();
+                    this.setState({ hiddenBtn: true });
+                } else {
+                    this.setState(prevState => ({
+                        images: prevState.images ? [...prevState.images, ...hits] : hits,
+                    }));
+                }
+                if (12 * page > totalHits) {
+                    this.setState({ hiddenBtn: true });
+                }
             })
-            .catch(error => this.setState({ error }))
-            .finally(() => this.setState({ loading: false }));
+            .catch(error => {
+                console.error('Error fetching images:', error);
+            })
+            .finally(() => {
+                this.setState({ loading: false });
+            });
+    };
 
+    loadMoreImages = () => {
+        this.setState(prevState => ({
+            page: prevState.page + 1,
+        }), () => {
+            this.fetchImages();
+        });
     };
 
     render() {
-    return (
-        <>
-        {this.state.loading && <Loader />}
+        const { loading, images, hiddenBtn } = this.state;
 
-        {this.state.images && (
-            <ul className={css.imageGalleryUl}>
-            {this.state.images.map(image => {
-                return (
-                <ImageGalleryItem
-                    showModal={() => this.props.showModal(image.largeImageURL)}
-                    key={image.id}
-                    smallImg={image.webformatURL}
-                    alt={image.tags}
-                />
-                );
-            })}
-            </ul>
-        )}
-        {this.state.images && !this.state.hiddenBnt && (
-            <Button onFindMore={() => this.onFindMore()} />
-        )}
-        </>
-    );
+        return (
+            <>
+                {loading && <Loader />}
+
+                {images && (
+                    <ul className={css.imageGalleryUl}>
+                        {images.map(image => (
+                            <ImageGalleryItem
+                                showModal={() => this.props.showModal(image.largeImageURL)}
+                                key={image.id}
+                                smallImg={image.webformatURL}
+                                alt={image.tags}
+                            />
+                        ))}
+                    </ul>
+                )}
+
+                {images && !hiddenBtn && (
+                    <Button onFindMore={this.loadMoreImages} />
+                )}
+            </>
+        );
     }
 }
