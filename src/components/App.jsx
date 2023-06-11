@@ -28,7 +28,7 @@ export class App extends Component {
   render() {
     return (
       <>
-        <div class="container">
+        <div className={css.container}>
         <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery
           showModal={this.showModal}
