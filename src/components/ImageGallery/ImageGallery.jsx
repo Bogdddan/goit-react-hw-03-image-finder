@@ -72,9 +72,6 @@ loadMoreImages = () => {
         (prevState) => ({
         page: prevState.page + 1,
         }),
-        () => {
-        this.fetchImages();
-    }
     );
 };
 
